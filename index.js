@@ -4,6 +4,8 @@ let express = require('express');
 let exec = require('child_process').exec;
 let app = express();
 
+app.use(express.static('public'));
+
 app.get('/search', (req, res) => {
   let query = req.query.q;
   if (typeof query !== 'undefined') {
