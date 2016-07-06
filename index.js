@@ -4,6 +4,12 @@ let express = require('express');
 let exec = require('child_process').exec;
 let app = express();
 
+const existingUsers = [
+  'danvalencia',
+  'pjulian',
+  'johndoe'
+]
+
 app.use(express.static('public'));
 
 app.get('/search', (req, res) => {
@@ -18,6 +24,23 @@ app.get('/search', (req, res) => {
   }
 })
 
+app.get('/checkUser', (req, res) => {
+  let user = req.query.username;
+
+  if (typeof user !== 'undefined') {
+    let foundUsers = existingUsers.filter((u) => {return u.toLowerCase() === user.toLowerCase()});
+    if (foundUsers.length > 0) {
+      // User exists
+      console.log("User already exists!");
+      res.status(409).json({msg: "User already exists"});
+    } else {
+      console.log("User " + user + " does not exist.");
+      res.json({msg: "User does not exist"});
+    }
+  }
+
+
+})
 app.listen(3000, () => {
   console.log('Sample app listening on port 3000');
 })
